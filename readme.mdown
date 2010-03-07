@@ -1,0 +1,106 @@
+LESS3
+=====
+
+LESS3 is an extension to LESS to allow you to start using CSS3 properties today. But not merely that. It is becoming increasingly popular to design your app or site in the browser without working in photoshop. This is becoming easier with CSS3 properties like box-shadow, border-radius and gradients. To know more about this topic, I recommend reading [Megan Fischer's amazing article about it]:(http://24ways.org/2009/make-your-mockup-in-markup).
+
+This approach is in some ways amazingly liberating and speeds up things considerably. However when the time comes that you have to make sure that your design works in most browsers - the boring part begins and you have to actually create your gradients in Photoshop, add three times the code for every possible vendor prefix and workaround rgba incompatibility.
+
+How does LESS3 help you?
+------------------------
+
+It includes intelligent mixins that abstract most of these boring parts away for you. I recommend to still check how your site looks in legacy browsers, however it will do most of the heavy lifting for you. Let's look at some examples:
+
+First you have to import less3:
+
+    @import '<path_to_less3>/stylesheets/css3';
+    
+Then you can start using the mixins.
+
+RGBA color
+----------
+
+Instead of writing:
+
+    background-color: rgba(20, 30, 120, 0.8);
+    
+write:
+
+    .background-color(rgba(20, 30, 120, 0.8));
+    
+which produces backwards-compatible code:
+    
+    background-color: #141e78;
+    background-color: rgba(20, 30, 120, 0.8);
+    
+The same works with color and border properties.
+
+Rounded corners
+---------------
+
+    .border-radius(5px);
+
+produces
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+Also included is the shortcut for specifying all of the corners differently:
+
+    .border-radii(3px, 5px, 8px, 1em);
+    
+Produces
+
+    -moz-border-radius-topleft: 3px;
+    -webkit-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    -moz-border-radius-bottomleft: 1em;
+    -webkit-border-bottom-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+    -moz-border-radius-bottomright: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    
+Imagine having to type all that by hand. Phew.
+
+Box Shadows
+-----------
+
+    .box-shadow(0, 3px, 5px, rgba(0,0,0,0.2));
+    
+produces
+
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    
+One last thing: Gradients
+-------------------------
+
+Since gradients are such an important part of the design, one cannot accept that most browsers won't render them. So I have decided to create a workaround. Use either the general purpose .linear-gradient:
+
+    .linear-gradient(@start_position:left bottom, @end_position: left top, @percentage_where_to_start_color1:0.70, @color1:rgba(0,0,0,1), @percentage_where_to_start_color2:0.80, @color2:rgba(255,255,255,1), @fallback_image_width:100, @fallback_image_height:100)
+    
+Or the specialized helpers .horizontal-gradient and .vertical-gradient, where you generally don't have to fool with the directions.
+
+This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the Macruby script in the utils directory. When you're preparing your sttylesheets for prime time, just run     
+
+    macruby grad.rb <path to stylesheet 1> <path to stylesheets 2 ...>
+    
+These should be CSS files, not LESS files. This will replace all -postprocessor-linear-gradient with a url() statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
+
+Previewing less fortunate browsers
+==================================
+
+Of course you can actually fire up a bizzare browser and test in there, but this may be inconvenient for some reason (eg. you're on a mac).
+
+If you just instead of @import 'css3'; write
+
+    @import 'css3-crippled';
+    
+All of the mixins will include only the backwards compatible code (or none as with box-shadow and border-radius).
+
+Also, **Patches accepted** ;)
