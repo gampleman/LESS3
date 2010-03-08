@@ -1,7 +1,7 @@
 LESS3
 =====
 
-LESS3 is an extension to LESS to allow you to start using CSS3 properties today. But not merely that. It is becoming increasingly popular to design your app or site in the browser without working in photoshop. This is becoming easier with CSS3 properties like box-shadow, border-radius and gradients. To know more about this topic, I recommend reading [Megan Fischer's amazing article about it]:(http://24ways.org/2009/make-your-mockup-in-markup).
+LESS3 is an extension to LESS to allow you to start using CSS3 properties today. But not merely that. It is becoming increasingly popular to design your app or site in the browser without working in photoshop. This is becoming easier with CSS3 properties like box-shadow, border-radius and gradients. To know more about this topic, I recommend reading [Megan Fischer's amazing article about it](http://24ways.org/2009/make-your-mockup-in-markup).
 
 This approach is in some ways amazingly liberating and speeds up things considerably. However when the time comes that you have to make sure that your design works in most browsers - the boring part begins and you have to actually create your gradients in Photoshop, add three times the code for every possible vendor prefix and workaround rgba incompatibility.
 
@@ -87,10 +87,10 @@ Multi-column layouts
 
 We support the following properties of the multi-column layout module:
 
-- `.column-width`
-- `.column-count`
-- `.column-gap`
-- `.column-rule`
+- `.column-width(width);`
+- `.column-count(number);`
+- `.column-gap(width);`
+- `.column-rule(width, type, color);`
 
 Use as you would expect, just remember to put commas between arguments.
 
@@ -103,20 +103,18 @@ Since gradients are such an important part of the design, one cannot accept that
     
 Or the specialized helpers .horizontal-gradient and .vertical-gradient, where you generally don't have to fool with the directions.
 
-This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the Macruby script in the utils directory. When you're preparing your sttylesheets for prime time, just run     
+This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the *Macruby* script in the `utils` directory. When you're preparing your stylesheets for prime time, just run     
 
     macruby grad.rb <path to stylesheet 1> <path to stylesheets 2 ...>
     
-These should be CSS files, not LESS files. This will replace all -postprocessor-linear-gradient with a url() statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
+These should be CSS files, not LESS files. This will replace all `-postprocessor-linear-gradient` with a `url()` statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
 
 Previewing less fortunate browsers
 ==================================
 
 Of course you can actually fire up a bizzare browser and test in there, but this may be inconvenient for some reason (eg. you're on a mac).
 
-If you just instead of `@import 'css3';` write
-
-    @import 'css3-crippled';
+If you just instead of `@import 'css3';` write `@import 'css3-crippled';`.
     
 All of the mixins will include only the backwards compatible code (or none as with box-shadow and border-radius).
 
