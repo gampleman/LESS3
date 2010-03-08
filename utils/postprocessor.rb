@@ -7,17 +7,35 @@ include Graphics
 
 
 def run(f)
-	re = /-postprocessor-linear-gradient\((\d+), (\d+), (\w+ \w+), (\w+ \w+), (\d|\d?\.\d+), (.+?), (\d|\d?\.\d+), (rgba?\(.+?\)|.+?)\)/
+	gradient = /-postprocessor-linear-gradient\((\d+), (\d+), (\w+ \w+), (\w+ \w+), (\d|\d?\.\d+), (.+?), (\d|\d?\.\d+), (rgba?\(.+?\)|.+?)\)/
+	rule = /^(.+?) \{/
+	rgba_background = /background-color: rgba\((\d+), (\d+), (\d+), (\d\.\d)\);/
+	last_rule = ""
+	ie_style = ""
 	str = File.open(f).readlines 
 	str.map! do |l|
-		if (a = l.match re)
-			l.gsub!(re, draw(a)) # pass in the matched variables from the regexp
+		if (a = l.match gradient)
+			l.gsub!(gradient, draw(a)) # pass in the matched variables from the regexp
+		elsif (a = l.match rule)
+			last_rule = a[1]
+		elsif (a = l.match rgba_background)
+			col = "#" + to_hex(a[4].to_f * 255) + to_hex(a[1]) + to_hex(a[2]) + to_hex(a[3])
+			ie_style << last_rule + " {\n" + "\tbackground:transparent;\n\tfilter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#{col},endColorstr=#{col}); \n\tzoom: 1; \n}"
 		end
 		l
 	end
 	File.open(f, 'w').write(str.join)
+	puts "Internet explorer stylesheet for rgba color backrounds:", "<!--[if IE]>\n\n<style type=\"text/css\">\n", ie_style, "\n</style>\n\n<![endif]-->" if ie_style.length > 0
 end
 
+def to_hex(i)
+	s = i.to_i.to_s(16)
+	if s.length == 1
+		"0" + s
+	else
+		s
+	end
+end
 
 def draw(args)
 	puts args.inspect

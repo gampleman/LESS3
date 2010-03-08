@@ -34,6 +34,8 @@ which produces backwards-compatible code:
     
 The same works with color and border properties.
 
+Also note that when you use the postprocessor on your stylesheet (see gradients below), it will output to stdout an IE only stylesheet simulating rgba color backgrounds using a proprietary Microsoft filter. You may consider using this in a conditional comment. Similar workarounds are welcome (although we are trying to keep this in the CSS + images level. You can always do a Google search for Javascript based workarounds).
+
 Rounded corners
 ---------------
 
@@ -94,16 +96,16 @@ We support the following properties of the multi-column layout module:
 
 Use as you would expect, just remember to put commas between arguments.
 
-One last thing: Gradients
--------------------------
+Gradients
+---------
 
 Since gradients are such an important part of the design, one cannot accept that most browsers won't render them. So I have decided to create a workaround. Use either the general purpose .linear-gradient:
 
     .linear-gradient(@start_position:left bottom, @end_position: left top, @percentage_where_to_start_color1:0.70, @color1:rgba(0,0,0,1), @percentage_where_to_start_color2:0.80, @color2:rgba(255,255,255,1), @fallback_image_width:100, @fallback_image_height:100)
     
-Or the specialized helpers .horizontal-gradient and .vertical-gradient, where you generally don't have to fool with the directions.
+Or the specialized helpers `.horizontal-gradient` and `.vertical-gradient`, where you generally don't have to fool with the directions and are generally recommended.
 
-This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the *Macruby* script in the `utils` directory. When you're preparing your stylesheets for prime time, just run     
+This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the *Macruby* script in the `utils` directory (requires HotCocoa). When you're preparing your stylesheets for prime time, just run     
 
     macruby grad.rb <path to stylesheet 1> <path to stylesheets 2 ...>
     
@@ -112,10 +114,8 @@ These should be CSS files, not LESS files. This will replace all `-postprocessor
 Previewing less fortunate browsers
 ==================================
 
-Of course you can actually fire up a bizzare browser and test in there, but this may be inconvenient for some reason (eg. you're on a mac).
+Of course you can actually fire up a bizzare browser and test in there, but this may be inconvenient for some reason (eg. you're on a Mac).
 
-If you just instead of `@import 'css3';` write `@import 'css3-crippled';`.
-    
-All of the mixins will include only the backwards compatible code (or none as with box-shadow and border-radius).
+If you just instead of `@import 'css3';` write `@import 'css3-crippled';`: All of the mixins will include only the backwards compatible code (or none as with `.box-shadow` and `.border-radius`).
 
 Also, **Patches accepted** ;)
