@@ -10,14 +10,32 @@
 .vertical-gradient(@cs1pos:0.0, @cs1color:rgba(0,0,0,1), @cs2pos:1.0, @cs2color:rgba(255,255,255,1), @height:100) {
 	.linear-gradient(center bottom, center top, @cs1pos, @cs1color, @cs2pos, @cs2color, 3, @height);
 	background-repeat: repeat-x;
+	//set properties for browsers that can't draw gradients, but can at least scale images
+	-o-background-size: 3px 100%;
+	-khtml-background-size: 3px 100%;
 }
 
 .horizontal-gradient(@cs1pos:0.0, @cs1color:rgba(0,0,0,1), @cs2pos:1.0, @cs2color:rgba(255,255,255,1), @width:100) {
 	.linear-gradient(left top, right top, @cs1pos, @cs1color, @cs2pos, @cs2color, @width, 3);
 	background-repeat: repeat-y;
+	//set properties for browsers that can't draw gradients, but can at least scale images
+	-o-background-size: 100% 3px;
+	-khtml-background-size: 100% 3px;
 }
 
-// RGBA support helpers
+// background size
+
+.background-size(@width:10px, @height: 10px) {
+	-o-background-size: @width @height;
+	-webkit-background-size: @width @height;
+	-khtml-background-size: @width @height;
+	-moz-background-size: @width @height;
+	background-size: @width @height;
+}
+
+
+
+// RGBA and HSLA support helpers
 
 .background-color(@color: rgba(0,0,0,1)) {
 	background-color: rgb(0,0,0) + @color;
@@ -65,4 +83,28 @@
 	box-shadow: @x @y @blur @color;
 }
 
+// multi column layout
 
+.column-count(@num:2) {
+	-webkit-column-count: @num;
+	-moz-column-count: @num;
+	column-count: @num;
+}
+
+.column-width(@width: 120px) {
+	-webkit-column-width: @width;
+	-moz-column-width: @width;
+	column-width: @width;
+}
+
+.column-rule(@width: 1px, @type: solid, @color: rgba(0,0,0,0.8)) {
+	-webkit-column-rule: @width @type @color;
+	-moz-column-rule: @width @type @color;
+	column-rule: @width @type @color;
+}
+
+.column-gap(@width: 1em) {
+	-webkit-column-gap: @width;
+	-moz-column-gap: @width;
+	column-gap: @width;
+}

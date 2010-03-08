@@ -76,7 +76,24 @@ produces
     -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+
+Background size
+---------------
+
+    .background-size(width, height);
     
+Multi-column layouts
+--------------------
+
+We support the following properties of the multi-column layout module:
+
+- `.column-width`
+- `.column-count`
+- `.column-gap`
+- `.column-rule`
+
+Use as you would expect, just remember to put commas between arguments.
+
 One last thing: Gradients
 -------------------------
 
@@ -97,7 +114,7 @@ Previewing less fortunate browsers
 
 Of course you can actually fire up a bizzare browser and test in there, but this may be inconvenient for some reason (eg. you're on a mac).
 
-If you just instead of @import 'css3'; write
+If you just instead of `@import 'css3';` write
 
     @import 'css3-crippled';
     
