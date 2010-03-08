@@ -107,7 +107,7 @@ Or the specialized helpers `.horizontal-gradient` and `.vertical-gradient`, wher
 
 This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the *Macruby* script in the `utils` directory (requires HotCocoa). When you're preparing your stylesheets for prime time, just run     
 
-    macruby grad.rb <path to stylesheet 1> <path to stylesheets 2 ...>
+    macruby postprocessor.rb <path to stylesheet 1> <path to stylesheets 2 ...>
     
 These should be CSS files, not LESS files. This will replace all `-postprocessor-linear-gradient` with a `url()` statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
 
