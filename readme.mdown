@@ -16,6 +16,18 @@ First you have to import less3:
     
 Then you can start using the mixins.
 
+The postprocessor
+-----------------
+
+The postporcessor is a *Macruby* script in the `utils` directory. It is meant to be used mainly in the phase of making sure that your design works in all browsers. As you will see, it analyzes your (compiled) stylesheets and creates images and IE stylesheets and other recommendations to make this task much less of a pain. 
+
+You can run it by this command    
+
+    macruby utils/postprocessor.rb <path to stylesheet 1> <path to stylesheets 2 ...>
+    
+Currently this will only work on 10.6 Macs (also remember to get the latest Macruby and HotCocoa), however if anyone finds a way how to do this in a cross-platform way then please fork and send in the patch.
+    
+
 RGBA color
 ----------
 
@@ -35,6 +47,10 @@ which produces backwards-compatible code:
 The same works with color and border properties.
 
 Also note that when you use the postprocessor on your stylesheet (see gradients below), it will output to stdout an IE only stylesheet simulating rgba color backgrounds using a proprietary Microsoft filter. You may consider using this in a conditional comment. Similar workarounds are welcome (although we are trying to keep this in the CSS + images level. You can always do a Google search for Javascript based workarounds).
+
+    .background(rgba(r,g,b,a));
+    
+Use this helper if you want to set a background to a rgba value but you *don't* want to set a background image or gradient. This will add similar declarations to the above mentioned `.background-color`, but also adds a `background: -postprocessor-rgba-bg(rgba(...));` declaration. The postprocessor will turn that into a data-url 1x1 pixel rgba png image that is tiled on the background. This adds support for older Firefox and Opera browsers (and IE8). However for older versions of IE you will need the step above.
 
 Rounded corners
 ---------------
@@ -105,11 +121,7 @@ Since gradients are such an important part of the design, one cannot accept that
     
 Or the specialized helpers `.horizontal-gradient` and `.vertical-gradient`, where you generally don't have to fool with the directions and are generally recommended.
 
-This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The magic comes then with the *Macruby* script in the `utils` directory (requires HotCocoa). When you're preparing your stylesheets for prime time, just run     
-
-    macruby postprocessor.rb <path to stylesheet 1> <path to stylesheets 2 ...>
-    
-These should be CSS files, not LESS files. This will replace all `-postprocessor-linear-gradient` with a `url()` statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
+This will produce correct incantations for Gecko and Webkit browsers. It will also produce this weird -postprocessor-linear-gradient incantation. This should not disturb you while designing in your favorite browser (unless your favorite browser is Internet Explorer in which case this project is not for you). The postprocessor will replace all `-postprocessor-linear-gradient` with a `url()` statement that links to an image that the script helpfully generates for you. Note that gradients should be specified only with rgba color (a limitation I plan on removing).
 
 Previewing less fortunate browsers
 ==================================

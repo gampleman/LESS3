@@ -1,0 +1,33 @@
+<!doctype html5>
+<html>
+<head>
+    <link rel="stylesheet" href="rgba.css" />
+    <!--[if IE]>
+    <style type="text/css">
+    #rgba-iefilter, #rgba-full {
+    	background:transparent;
+    	filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#32000000,endColorstr=#32000000); 
+    	zoom: 1; 
+    }
+    </style>
+    <![endif]-->
+</head>
+<body>
+    <h1>Backgrounds</h1>
+    <div class="tester" id="rgba">RGBA with no workarounds</div>
+    <div class="tester" id="rgba-fallback">RGBA with fallback color</div>
+    <div class="tester" id="rgba-iefilter">RGBA with IE filter</div>
+    <div class="tester" id="rgba-data">RGBA with data url fallback</div>
+    <div class="tester" id="rgba-full">RGBA with both data url and IE fallbacks (eg. full-blown fallback)</div>
+    <br style="clear:both">
+    <h1>Borders</h1>
+    <div class="tester" id="borders">RGBA with no workarounds</div>
+    <div class="tester" id="borders-fallback">RGBA with fallback color</div>
+    <br style="clear:both">
+    <h1>Text</h1>
+    <div class="tester" id="text">RGBA with no workarounds</div>
+    <div class="tester" id="text-fallback">RGBA with fallback color</div>
+    <br style="clear:both">
+</body>
+
+</html>

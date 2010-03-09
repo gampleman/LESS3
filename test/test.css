@@ -33,4 +33,5 @@
   -webkit-column-rule: 3px solid red;
   -moz-column-rule: 3px solid red;
   column-rule: 3px solid red;
+  background: -postprocessor-rgba-bg(rgba(255, 10, 10, 0.1));
 }

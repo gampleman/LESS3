@@ -7,25 +7,40 @@ include Graphics
 
 
 def run(f)
+	puts "Processing #{f}..."
 	gradient = /-postprocessor-linear-gradient\((\d+), (\d+), (\w+ \w+), (\w+ \w+), (\d|\d?\.\d+), (.+?), (\d|\d?\.\d+), (rgba?\(.+?\)|.+?)\)/
 	rule = /^(.+?) \{/
-	rgba_background = /background-color: rgba\((\d+), (\d+), (\d+), (\d\.\d)\);/
-	last_rule = ""
-	ie_style = ""
+	rgba_background_color = /background(?:-color)?: rgba\((\d+), (\d+), (\d+), (\d\.\d)\);/
+	rgba_background = /-postprocessor-rgba-bg\((rgba\(\d+, \d+, \d+, \d\.\d\))\)/
+	last_rule, ie_style, png = "", "", false
 	str = File.open(f).readlines 
 	str.map! do |l|
 		if (a = l.match gradient)
 			l.gsub!(gradient, draw(a)) # pass in the matched variables from the regexp
+			png = true
 		elsif (a = l.match rule)
 			last_rule = a[1]
-		elsif (a = l.match rgba_background)
+		elsif (a = l.match rgba_background_color)
 			col = "#" + to_hex(a[4].to_f * 255) + to_hex(a[1]) + to_hex(a[2]) + to_hex(a[3])
 			ie_style << last_rule + " {\n" + "\tbackground:transparent;\n\tfilter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#{col},endColorstr=#{col}); \n\tzoom: 1; \n}"
+		elsif (a = l.match rgba_background)
+			l.gsub! rgba_background,  "url(data:image/png;base64,#{data_url(a)})"
 		end
 		l
 	end
 	File.open(f, 'w').write(str.join)
-	puts "Internet explorer stylesheet for rgba color backrounds:", "<!--[if IE]>\n\n<style type=\"text/css\">\n", ie_style, "\n</style>\n\n<![endif]-->" if ie_style.length > 0
+	puts "Internet explorer stylesheet for rgba color backrounds:\n\n", "<!--[if IE]>\n<style type=\"text/css\">\n", ie_style, "</style>\n<![endif]-->" if ie_style.length > 0
+	puts "\nAlso don't forget that older IEs don't support alpha transparency. Use a script such as http://24ways.org/2007/supersleight-transparent-png-in-ie6 to support it." if png
+end
+
+def data_url(args)
+	c = parse_color(args[1])
+	filename = "postprocessor-tmp-image.png"
+	canvas = Canvas.new :type => :image, :filename => filename, :size => [1,1]
+	canvas.background c
+	canvas.save
+	puts "  Created data url for #{c.name} image with #{c.a} opacity."
+	[File.read(filename)].pack("m*").gsub /\n/, "" #base64 encoding
 end
 
 def to_hex(i)
@@ -124,3 +139,4 @@ end
 ARGV.each do |f|
 	run f
 end
+File.unlink("postprocessor-tmp-image.png") rescue nil

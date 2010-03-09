@@ -52,6 +52,15 @@
 	border: @width @type @color;
 }
 
+.background(@colori: rgba(0,0,0,1)) { // this also supports older browsers like Firefox2 etc
+	background: rgb(0,0,0) + @colori;
+	//this generates a data url 1x1 png
+	// we have to cast to rgba just to make sure it works
+	background: -postprocessor-rgba-bg(@colori); 
+	background-repeat: repeat;
+	background: @colori;
+}
+
 // rounded rectangles
 .border-radius(@radius: 5px) {
 	-webkit-border-radius: @radius;

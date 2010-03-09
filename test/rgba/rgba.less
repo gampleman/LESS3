@@ -1,0 +1,41 @@
+@import '../../stylesheets/css3';
+
+@color: rgba(0, 0, 0, 0.2);
+body {
+	background: rgb(200, 0, 0);
+}
+
+.tester {
+	width: 100px;
+	height: 100px;
+	margin: 20px;
+	padding: 20px;
+	float: left;
+}
+
+#rgba {
+	background-color: @color;
+}
+#rgba-fallback, #rgba-iefilter {
+	.background-color(@color);
+}
+#rgba-data, #rgba-full {
+	.background(@color);
+}
+
+#borders {
+	border: 15px solid @color;
+}
+#borders-fallback {
+	.border(15px, solid, @color);
+}
+
+
+#text {
+	font-weight: bold;
+	color: @color;
+}
+#text-fallback {
+	font-weight: bold;
+	.color(@color);
+}

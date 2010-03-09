@@ -1,0 +1,33 @@
+body { background: #c80000; }
+.tester {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  padding: 20px;
+  float: left;
+}
+#rgba { background-color: rgba(0, 0, 0, 0.2); }
+#rgba-fallback, #rgba-iefilter {
+  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+#rgba-data, #rgba-full {
+  background: #000000;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWNgYGAwBgAAOAA0a+yiAQAAAABJRU5ErkJggg==);
+  background-repeat: repeat;
+  background: rgba(0, 0, 0, 0.2);
+}
+#borders { border: 15px solid rgba(0, 0, 0, 0.2); }
+#borders-fallback {
+  border: 15px solid #000000;
+  border: 15px solid rgba(0, 0, 0, 0.2);
+}
+#text {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.2);
+}
+#text-fallback {
+  font-weight: bold;
+  color: #000000;
+  color: rgba(0, 0, 0, 0.2);
+}
