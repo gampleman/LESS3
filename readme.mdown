@@ -1,7 +1,7 @@
 LESS3
 =====
 
-LESS3 is an extension to [LESS]:(http://lesscss.org/) to allow you to start using CSS3 properties today. But not merely that. It is becoming increasingly popular to design your app or site in the browser without working in photoshop. This is becoming easier with CSS3 properties like box-shadow, border-radius and gradients. To know more about this topic, I recommend reading [Megan Fischer's amazing article about it](http://24ways.org/2009/make-your-mockup-in-markup).
+LESS3 is an extension to [LESS](http://lesscss.org) to allow you to start using CSS3 properties today. But not merely that. It is becoming increasingly popular to design your app or site in the browser without working in photoshop. This is becoming easier with CSS3 properties like box-shadow, border-radius and gradients. To know more about this topic, I recommend reading [Megan Fischer's amazing article about it](http://24ways.org/2009/make-your-mockup-in-markup).
 
 This approach is in some ways amazingly liberating and speeds up things considerably. However when the time comes that you have to make sure that your design works in most browsers - the boring part begins and you have to actually create your gradients in Photoshop, add three times the code for every possible vendor prefix and workaround rgba incompatibility.
 
