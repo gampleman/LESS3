@@ -1,4 +1,6 @@
-body { background: #c80000; }
+body {
+  background: #c80000;
+}
 .tester {
   width: 100px;
   height: 100px;
@@ -13,7 +15,7 @@ body { background: #c80000; }
 }
 #rgba-data, #rgba-full {
   background: #000000;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWNgYGAwBgAAOAA0a+yiAQAAAABJRU5ErkJggg==);
+  background: -postprocessor-rgba-bg(rgba(0, 0, 0, 0.2));
   background-repeat: repeat;
   background: rgba(0, 0, 0, 0.2);
 }
@@ -22,11 +24,14 @@ body { background: #c80000; }
   border: 15px solid #000000;
   border: 15px solid rgba(0, 0, 0, 0.2);
 }
-#text {
+#text, #text-fallback {
+	color: blue;
+}
+.tester#text {
   font-weight: bold;
   color: rgba(0, 0, 0, 0.2);
 }
-#text-fallback {
+.tester#text-fallback {
   font-weight: bold;
   color: #000000;
   color: rgba(0, 0, 0, 0.2);

@@ -63,6 +63,7 @@
 
 // rounded rectangles
 .border-radius(@radius: 5px) {
+	-khtml-border-radius: @radius;
 	-webkit-border-radius: @radius;
 	-moz-border-radius: @radius;
 	border-radius: @radius;
@@ -72,15 +73,19 @@
 	// quicky for setting this all at once
 	// imagine typing all this junk by hand :-D
 	-moz-border-radius-topleft: @tl;
+	-khtml-border-top-left-radius: @tl;
 	-webkit-border-top-left-radius: @tl;
 	border-top-left-radius: @tl;
 	-moz-border-radius-topright: @tr;
+	-khtml-border-top-right-radius: @tr;
 	-webkit-border-top-right-radius: @tr;
 	border-top-right-radius: @tr;
 	-moz-border-radius-bottomleft: @bl;
+	-khtml-border-bottom-left-radius: @bl;
 	-webkit-border-bottom-left-radius: @bl;
 	border-bottom-left-radius: @bl;
 	-moz-border-radius-bottomright: @br;
+	-khtml-border-bottom-right-radius: @br;
 	-webkit-border-bottom-right-radius: @br;
 	border-bottom-right-radius: @br;
 }
@@ -116,4 +121,55 @@
 	-webkit-column-gap: @width;
 	-moz-column-gap: @width;
 	column-gap: @width;
+}
+
+// transforms
+.transform(@tf: none) {
+	-webkit-transform: @tf;
+	-moz-transform: @tf;
+	-o-transform: @tf;
+	transform: @tf;
+	/* ehm, this could be hacked for IE via the Matrix filter:
+	 http://msdn.microsoft.com/en-us/library/ms533014(VS.85,loband).aspx
+	but I'm currently not able to do it. Maybe next version. */
+}
+
+.transform-origin(@x: 50%, @y: 50%) {
+	-webkit-transform-origin: @x @y;
+	-o-transform-origin: @x @y;
+	-moz-transform-origin: @x @y;
+	transform-origin: @x @y;
+}
+
+
+// transitions WOOT!
+
+// sadly LESS really can't pass a list so you might need to copy this
+.transition-property(@properties: opacity) {
+	-webkit-transition-property: @properties;
+	-o-transition-property: @properties;
+	-moz-transition-property: @properties; /* this should be supported in FF 3.7 */
+	transition-property: @properties;
+}
+
+.transition-duration(@time: 0.5s) {
+	-webkit-transition-duration: @time;
+	-o-transition-duration: @time;
+	-moz-transition-duration: @time; /* this should be supported in FF 3.7 */
+	transition-duration: @time;
+}
+
+.transition-timing-function(@f: linear) {
+	-webkit-transition-timing-function: @f;
+	-o-transition-timing-function: @f;
+	-moz-transition-timing-function: @f;
+	transition-timing-function: @f;
+}
+
+// and finally the shorthand
+.transition(@property: opacity, @time: 0.5s, @f: linear) {
+	-webkit-transition: @property @time @f;
+	-o-transition: @property @time @f;
+	-moz-transition: @property @time @f;
+	transition: @property @time @f;
 }

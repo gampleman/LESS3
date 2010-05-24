@@ -6,9 +6,15 @@
 	.border-radius(5px);
 	.border-radii(3px, 5px, 8px, 1em);
 	.box-shadow(0, 3px, 5px, rgba(0,0,0,0.2));
+	 //testing the one without the blur to see how the postprocessor works
+	.box-shadow(0, 3px, 0, rgba(20,60,0,0.2));
 	.column-width(2em);
 	.column-count(3);
 	.column-gap(3em);
 	.column-rule(3px, solid, red);
 	background: -postprocessor-rgba-bg(rgba(255, 10, 10, 0.1));
+	.transition-property(top);
+	.transition-duration(3s);
+	.transition-timing-function(ease-in);
+	.transform(rotate(4deg) translate(100px));
 }

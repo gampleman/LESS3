@@ -12,7 +12,8 @@ def run(f)
 	rule = /^(.+?) \{/
 	rgba_background_color = /background(?:-color)?: rgba\((\d+), (\d+), (\d+), (\d\.\d)\);/
 	rgba_background = /-postprocessor-rgba-bg\((rgba\(\d+, \d+, \d+, \d\.\d\))\)/
-	last_rule, ie_style, png = "", "", false
+	box_shadow_without_blur = /^\W*box-shadow: (\d+)(?:\w\w)? (\d+)(?:\w\w)?( 0 | 0px | )rgba\((\d+), (\d+), (\d+), (\d\.\d)\)/
+	last_rule, ie_style, png = "", {}, false
 	str = File.open(f).readlines 
 	str.map! do |l|
 		if (a = l.match gradient)
@@ -22,16 +23,46 @@ def run(f)
 			last_rule = a[1]
 		elsif (a = l.match rgba_background_color)
 			col = "#" + to_hex(a[4].to_f * 255) + to_hex(a[1]) + to_hex(a[2]) + to_hex(a[3])
-			ie_style << last_rule + " {\n" + "\tbackground:transparent;\n\tfilter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#{col},endColorstr=#{col}); \n\tzoom: 1; \n}"
+			add_filter(ie_style, last_rule, "Gradient(startColorstr=#{col},endColorstr=#{col})", :background => :transparent, :zoom => 1)
 		elsif (a = l.match rgba_background)
 			l.gsub! rgba_background,  "url(data:image/png;base64,#{data_url(a)})"
+		elsif (a = l.match box_shadow_without_blur)
+			col = "#" + to_hex(a[3]) + to_hex(a[4]) + to_hex(a[5])
+			add_filter(ie_style, last_rule, "dropShadow(color=#{col}, offX=#{a[1]}, offY=#{a[2]}, positive=true)")
 		end
 		l
 	end
 	File.open(f, 'w').write(str.join)
-	puts "Internet explorer stylesheet for rgba color backrounds:\n\n", "<!--[if IE]>\n<style type=\"text/css\">\n", ie_style, "</style>\n<![endif]-->" if ie_style.length > 0
+	if ie_style.length > 0
+		puts "Internet explorer stylesheet:\n\n", "<!--[if IE]>\n<style type=\"text/css\">\n"
+		ie_style.each do |sel, rules|
+			puts sel + " {"
+			rules.each do |k, v|
+				puts "\t#{k}: #{v};"
+			end
+			puts "}"
+		end
+		puts "</style>\n<![endif]-->" 
+	end
 	puts "\nAlso don't forget that older IEs don't support alpha transparency. Use a script such as http://24ways.org/2007/supersleight-transparent-png-in-ie6 to support it." if png
 end
+
+def add_filter(s, sel, filter_str, h = {})
+	if s[sel]
+		if s[sel][:filter]
+			s[sel][:filter] << " progid:DXImageTransform.Microsoft.#{filter_str}"
+		else
+			s[sel][:filter] = "progid:DXImageTransform.Microsoft.#{filter_str}"
+		end
+	else
+		s[sel] = {:filter => "progid:DXImageTransform.Microsoft.#{filter_str}"}
+	end
+	s[sel]["-ms-filter"] = "\"#{s[sel][:filter]}\""
+	h.each do |k, v|
+		s[sel][k] = v
+	end
+end
+
 
 def data_url(args)
 	c = parse_color(args[1])
